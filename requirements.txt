@@ -1,0 +1,21 @@
+# PDF 解析与处理
+pdfminer.six==20231228
+PyMuPDF==1.23.8
+
+# 数值计算
+numpy==1.26.3
+
+# HTTP 请求
+requests==2.31.0
+
+# 进度条
+tqdm==4.66.1
+
+# GUI 界面
+gradio==4.19.2
+
+# 环境变量管理
+python-dotenv==1.0.0
+
+# OpenAI 兼容 API
+openai==1.12.0
