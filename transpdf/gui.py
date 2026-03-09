@@ -12,10 +12,10 @@ import logging
 
 import gradio as gr
 from pdf2zh import __version__
-from pdf2zh.high_level import translate
-from pdf2zh.doclayout import ModelInstance
-from pdf2zh.config import ConfigManager
-from pdf2zh.translator import (
+from transpdf.high_level import translate
+from transpdf.doclayout import ModelInstance
+from transpdf.config import ConfigManager
+from transpdf.translator import (
     GoogleTranslator,
     BingTranslator,
     DeepLTranslator,
