@@ -1,21 +1,42 @@
-# PDF 解析与处理
-pdfminer.six==20231228
-PyMuPDF==1.23.8
+# translate-plus 依赖包
 
-# 数值计算
-numpy==1.26.3
+# 核心依赖
+pdfminer.six>=20221105
+pymupdf>=1.23.0
+numpy>=1.21.0
+requests>=2.28.0
+tqdm>=4.65.0
 
-# HTTP 请求
-requests==2.31.0
+# 翻译服务 SDK
+openai>=1.0.0
+deepl>=1.15.0
+ollama>=0.1.0
+xinference-client>=0.10.0
+azure-ai-translation-text>=1.0.0
+azure-core>=1.26.0
+tencentcloud-sdk-python>=3.0.0
 
-# 进度条
-tqdm==4.66.1
+# AI 模型
+onnx>=1.14.0
+onnxruntime>=1.15.0
+huggingface-hub>=0.17.0
+opencv-python>=4.8.0
 
-# GUI 界面
-gradio==4.19.2
+# Web UI
+gradio>=4.0.0
+gradio-pdf>=0.0.6
 
-# 环境变量管理
-python-dotenv==1.0.0
+# 配置
+pyyaml>=6.0
+python-dotenv>=1.0.0
 
-# OpenAI 兼容 API
-openai==1.12.0
+# 重试机制
+tenacity>=8.2.0
+
+# BabelDoc (字体和文档处理)
+babeldoc>=0.0.3
+
+# 可选依赖
+# argostranslate>=1.9.0  # Argos 翻译 (离线翻译)
+# pikepdf>=8.0.0  # PDF/A 转换
+
