@@ -113,40 +113,86 @@ class BaseTranslator:
     def prompt(
         self, text: str, prompt_template: Template | None = None
     ) -> list[dict[str, str]]:
+        """
+        生成翻译 Prompt - 优化版，使翻译更贴近目标语言母语表达
+        
+        优化点：
+        1. 添加上下文理解指导 - 说明文本来源和类型
+        2. 添加母语化表达指导 - 强调自然流畅的表达
+        3. 添加专业术语处理 - 确保术语准确性和一致性
+        """
         try:
-            return [
-                {
-                    "role": "user",
-                    "content": cast(Template, prompt_template).safe_substitute(
-                        {
-                            "lang_in": self.lang_in,
-                            "lang_out": self.lang_out,
-                            "text": text,
-                        }
-                    ),
-                }
-            ]
-        except AttributeError:  # `prompt_template` is None
-            pass
-        except Exception:
-            logging.exception("Error parsing prompt, use the default prompt.")
+        # 优化版 Prompt - 更注重母语化表达和专业性
+        prompt_text = f"""你是一位专业的{self.lang_in}到{self.lang_out}翻译专家，专门从事学术论文和技术文档的翻译。
+
+## 翻译要求
+
+### 1. 上下文理解
+- 这段文本来自学术论文或技术文档
+- 请理解整体语境，确保翻译符合学术写作规范
+- 保持原文的逻辑结构和论证方式
+
+### 2. 母语化表达
+- 使用{self.lang_out}的自然表达方式，避免生硬的直译
+- 句式应符合{self.lang_out}的语法习惯和表达习惯
+- 用词应准确、专业、地道
+- 避免"翻译腔"，让译文读起来像母语者写的
+
+### 3. 专业术语处理
+- 保持专业术语的准确性，使用领域内公认的译法
+- 同一术语在全文中保持一致的翻译
+- 对于没有标准译法的术语，可保留原文
+
+### 4. 格式保留
+- 保留所有公式标记、Markdown 格式和特殊符号
+
+请翻译以下文本：
+
+源文本：
+{text}
+
+译文：
+"""
 
         return [
             {
-                "role": "user",
-                "content": (
-                    "You are a professional, authentic machine translation engine. "
-                    "Only Output the translated text, do not include any other text."
-                    "\n\n"
-                    f"Translate the following markdown source text to {self.lang_out}. "
-                    "Keep the formula notation {v*} unchanged. "
-                    "Output translation directly without any additional text."
-                    "\n\n"
-                    f"Source Text: {text}"
-                    "\n\n"
-                    "Translated Text:"
-                ),
-            },
+            }
+        ]
+        # 优化版 Prompt - 更注重母语化表达和专业性
+        prompt_text = f"""你是一位专业的{self.lang_in}到{self.lang_out}翻译专家，专门从事学术论文和技术文档的翻译。
+
+## 翻译要求
+
+### 1. 上下文理解
+- 这段文本来自学术论文或技术文档
+- 请理解整体语境，确保翻译符合学术写作规范
+- 保持原文的逻辑结构和论证方式
+
+### 2. 母语化表达
+- 使用{self.lang_out}的自然表达方式，避免生硬的直译
+- 句式应符合{self.lang_out}的语法习惯和表达习惯
+- 用词应准确、专业、地道
+- 避免"翻译腔"，让译文读起来像母语者写的
+
+### 3. 专业术语处理
+- 保持专业术语的准确性，使用领域内公认的译法
+- 同一术语在全文中保持一致的翻译
+- 对于没有标准译法的术语，可保留原文
+
+### 4. 格式保留
+- 保留所有公式标记、Markdown 格式和特殊符号
+
+请翻译以下文本：
+
+源文本：
+{text}
+
+译文：
+"""
+
+        return [
+            {
+            }
         ]
 
     def __str__(self):
@@ -324,8 +370,7 @@ class OllamaTranslator(BaseTranslator):
         self.add_cache_impact_parameters("temperature", self.options["temperature"])
 
     def do_translate(self, text: str) -> str:
-        max_token = len(text) * 5
-        if max_token > self.options["num_predict"]:
+        if (max_token := len(text) * 5) > self.options["num_predict"]:
             self.options["num_predict"] = max_token
 
         response = self.client.chat(
