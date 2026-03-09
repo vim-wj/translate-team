@@ -26,8 +26,9 @@ if env_file.exists():
     print(f"✅ 已加载环境变量：{env_file}")
 
 # 初始化日志系统
-from transpdf.logger import setup_logger
-logger = setup_logger()
+from transpdf.logger import get_logger, log_startup
+logger = get_logger()
+log_startup()
 
 logger.info("=" * 60)
 logger.info("transpdf - PDF 翻译工具")
@@ -35,7 +36,7 @@ logger.info("=" * 60)
 
 # 验证配置
 from transpdf.config_manager import ConfigManager
-config = ConfigManager.get_instance()
+config = ConfigManager()
 
 logger.info(f"配置文件：{config._config_path}")
 logger.info("配置加载成功")
